@@ -1,0 +1,22 @@
+export const users = [
+  { id: 1, name: "Alice", age: 25, city: "London", role: "Developer" },
+  { id: 2, name: "Bob", age: 30, city: "Paris", role: "Designer" },
+  { id: 3, name: "Charlie", age: 28, city: "London", role: "Developer" },
+  { id: 4, name: "David", age: 35, city: "Berlin", role: "Manager" },
+  { id: 5, name: "Emma", age: 22, city: "Paris", role: "Developer" },
+  { id: 6, name: "Frank", age: 40, city: "Berlin", role: "Manager" },
+  { id: 7, name: "Grace", age: 27, city: "London", role: "Designer" },
+  { id: 8, name: "Henry", age: 32, city: "Rome", role: "Developer" },
+  { id: 9, name: "Ivy", age: 24, city: "Rome", role: "Designer" },
+  { id: 10, name: "Jack", age: 29, city: "Paris", role: "Developer" },
+  { id: 11, name: "Kate", age: 31, city: "London", role: "Manager" },
+  { id: 12, name: "Leo", age: 26, city: "Berlin", role: "Developer" },
+  { id: 13, name: "Mia", age: 23, city: "Rome", role: "Designer" },
+  { id: 14, name: "Noah", age: 38, city: "Paris", role: "Manager" },
+  { id: 15, name: "Olivia", age: 21, city: "London", role: "Developer" },
+  { id: 16, name: "Peter", age: 33, city: "Berlin", role: "Designer" },
+  { id: 17, name: "Queen", age: 36, city: "Rome", role: "Manager" },
+  { id: 18, name: "Ryan", age: 28, city: "Paris", role: "Developer" },
+  { id: 19, name: "Sophia", age: 34, city: "London", role: "Designer" },
+  { id: 20, name: "Tom", age: 27, city: "Berlin", role: "Developer" }
+];
