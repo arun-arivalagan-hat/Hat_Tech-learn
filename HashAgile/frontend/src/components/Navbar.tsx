@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashAgileLogo } from './HashAgileLogo';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<string>('Home');
 
-  const navLinks = [
+  const desktopNavLinks = [
     { name: 'Expertise', href: '#expertise' },
     { name: 'Company', href: '#company' },
     { name: 'Insights', href: '#insights' },
@@ -13,18 +13,46 @@ export const Navbar: React.FC = () => {
     { name: 'Portfolio', href: '#portfolio' },
   ];
 
+  const mobileNavLinks = [
+    { name: 'Home', href: '#' },
+    { name: 'Expertise', href: '#expertise' },
+    { name: 'Company', href: '#company' },
+    { name: 'Insights', href: '#insights' },
+    { name: 'Careers', href: '#careers' },
+    { name: 'Portfolio', href: '#portfolio' },
+    { name: 'Contact Us', href: '#contact' },
+  ];
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
   const isContactActive = activeTab === 'Contact Us' || activeTab === 'Contact';
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md transition-all duration-300 border-b border-gray-200">
-        <div className="max-w-[1512px] mx-auto px-6 lg:px-[100px] h-[80px] lg:h-[112px] flex items-center justify-between">
-          <a href="#" onClick={() => setActiveTab('')} className="flex items-center shrink-0 group">
+      <header className="sticky top-0 z-40 w-full bg-white transition-all duration-300 border-b border-[#111836]/10">
+        <div className="max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-6 h-[64px] sm:h-[72px] lg:h-[80px] flex items-center justify-between lg:grid lg:grid-cols-12 lg:gap-4.5">
+          <a
+            href="#"
+            onClick={() => {
+              setActiveTab('Home');
+              setMobileMenuOpen(false);
+            }}
+            className="flex items-center shrink-0 group lg:col-span-3"
+          >
             <HashAgileLogo />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-8 lg:gap-10">
-            {navLinks.map((link) => {
+          <nav className="hidden lg:flex lg:col-span-6 items-center justify-center gap-5 lg:gap-7">
+            {desktopNavLinks.map((link) => {
               const isActive = activeTab === link.name;
               return (
                 <a
@@ -33,8 +61,8 @@ export const Navbar: React.FC = () => {
                   onClick={() => setActiveTab(link.name)}
                   className={`text-[16px] font-normal tracking-tight transition-all duration-300 py-1 ${
                     isActive
-                      ? 'text-[#FF548B]'
-                      : 'text-[#13153F] hover:text-[#EC3F62] hover:drop-shadow-[0_2px_10px_rgba(236,63,98,0.35)]'
+                      ? 'text-[#EC3F62] font-medium'
+                      : 'text-[#13153F] hover:text-[#EC3F62]'
                   }`}
                 >
                   {link.name}
@@ -43,7 +71,7 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex lg:col-span-3 items-center justify-end">
             <a
               href="#contact"
               onClick={() => setActiveTab('Contact Us')}
@@ -66,9 +94,11 @@ export const Navbar: React.FC = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={2}
+                  strokeWidth={3}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  <path d="M3 17h15L12 9" />
                 </svg>
               </span>
             </a>
@@ -76,50 +106,44 @@ export const Navbar: React.FC = () => {
 
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2 text-[#13153F] hover:text-[#EC3F62] transition-colors ml-auto focus:outline-none"
-            aria-label="Open Navigation Sidebar"
+            className="lg:hidden p-2 text-gray-700 hover:text-[#EC3F62] transition-colors focus:outline-none"
+            aria-label="Open Navigation Menu"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
         </div>
       </header>
 
-      {mobileMenuOpen && (
-        <div
-          onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs lg:hidden transition-opacity duration-300"
-        />
-      )}
-
-      <aside
-        className={`fixed top-0 right-0 z-50 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl lg:hidden transform transition-transform duration-300 ease-out flex flex-col ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+      <div
+        className={`fixed inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto no-scrollbar lg:hidden transition-transform duration-200 ease-out transform ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <img
-            src="/hashagile_logo.jpeg"
-            alt="HashAgile Icon"
-            className="h-10 w-auto object-contain block"
-          />
+        <div className="flex items-center justify-between px-4 sm:px-6 h-[68px] sm:h-[76px] shadow-sm shrink-0">
+          <a
+            href="#"
+            onClick={() => {
+              setActiveTab('Home');
+              setMobileMenuOpen(false);
+            }}
+            className="flex items-center"
+          >
+            <HashAgileLogo />
+          </a>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-            aria-label="Close Sidebar"
+            className="p-2 text-gray-600 hover:text-[#EC3F62] transition-colors focus:outline-none"
+            aria-label="Close Navigation Menu"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <nav className="flex-1 px-6 py-8 space-y-2 overflow-y-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-4 px-3">
-            Menu Navigation
-          </p>
-          {navLinks.map((link) => {
+        <nav className="flex-1 px-6 sm:px-8 py-6 flex flex-col gap-5 sm:gap-6">
+          {mobileNavLinks.map((link) => {
             const isActive = activeTab === link.name;
             return (
               <a
@@ -129,49 +153,43 @@ export const Navbar: React.FC = () => {
                   setActiveTab(link.name);
                   setMobileMenuOpen(false);
                 }}
-                className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-base font-medium transition-all ${
-                  isActive
-                    ? 'bg-[#FF548B]/10 text-[#FF548B] font-semibold'
-                    : 'text-[#13153F] hover:bg-gray-50 hover:text-[#EC3F62]'
-                }`}
+                className={`text-[20px] sm:text-[22px] tracking-tight transition-colors duration-150 ${isActive
+                    ? 'text-[#FF548B] font-medium'
+                    : 'text-[#13153F] hover:text-[#EC3F62]'
+                  }`}
               >
-                <span>{link.name}</span>
-                <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
+                {link.name}
               </a>
             );
           })}
         </nav>
 
-        <div className="p-6 border-t border-gray-100 bg-gray-50/50">
+        <div className="p-6 sm:px-10 pb-8 sm:pb-10 shrink-0">
           <a
             href="#contact"
             onClick={() => {
               setActiveTab('Contact Us');
               setMobileMenuOpen(false);
             }}
-            className={`group relative w-full inline-flex items-center justify-center p-[1.5px] rounded-full text-sm font-semibold transition-all shadow-md active:scale-95 ${
-              isContactActive
-                ? 'bg-gradient-to-r from-[#7C65F8] to-[#EC3F62]'
-                : 'bg-gradient-to-r from-[#7C65F8] to-[#EC3F62] hover:from-[#7C65F8] hover:to-[#7C65F8]'
-            }`}
+            className="w-full inline-flex items-center justify-center h-[56px] px-8 rounded-full text-[17px] font-medium text-white shadow-lg active:scale-[0.98] transition-transform duration-150 bg-gradient-to-r from-[#7C65F8] via-[#BA66FF] to-[#EC3F62] hover:opacity-95"
           >
-            <span
-              className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${
-                isContactActive
-                  ? 'bg-transparent text-white'
-                  : 'bg-white text-[#13153F] group-hover:bg-[#7C65F8] group-hover:text-white'
-              }`}
-            >
-              Contact Us
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            <span className="flex items-center justify-center gap-2.5">
+              Contact Now
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17L17 7M17 7H9M17 7V15" />
               </svg>
             </span>
           </a>
         </div>
-      </aside>
+      </div>
     </>
   );
 };
