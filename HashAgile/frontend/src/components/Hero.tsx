@@ -1,9 +1,8 @@
-import React from 'react';
-import pexelsTeam from '../assets/pexels-bertellifotografia-13870890 1.png';
+import heroImage from '../assets/image.png';
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative overflow-hidden pt-2 lg:pt-3 pb-4 lg:pb-6">
+    <section id="home" className="relative overflow-hidden pt-2 lg:pt-3 pb-4 lg:pb-6">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[10%] -left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#BA66FF]/12 via-[#7C65F8]/8 to-transparent blur-[120px]" />
         <div className="absolute top-[5%] -right-[5%] w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-[#EC3F62]/12 via-[#7C65F8]/10 to-transparent blur-[130px]" />
@@ -56,8 +55,8 @@ export const Hero: React.FC = () => {
           <div className="col-span-4 sm:col-span-6 lg:col-span-5 relative flex flex-col justify-center lg:justify-end items-center gap-6">
             <div className="relative w-full max-w-full group">
               <img
-                src={pexelsTeam}
-                alt="Engineering Team Mosaic Illustration"
+                src={heroImage}
+                alt="HashAgile Intelligent Enterprise AI Mosaic"
                 className="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.01]"
               />
             </div>
