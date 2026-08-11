@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Fonts } from "../constants/fonts";
 
 export default function StorageScreen() {
   const [name, setName] = useState("");
@@ -15,7 +16,6 @@ export default function StorageScreen() {
       const value = await AsyncStorage.getItem("username");
       if (value !== null) setStoredName(value);
     } catch (e) {
-      console.error(e);
     }
   };
 
@@ -26,7 +26,6 @@ export default function StorageScreen() {
       setStoredName(name);
       setName("");
     } catch (e) {
-      console.error(e);
     }
   };
 
@@ -35,14 +34,13 @@ export default function StorageScreen() {
       await AsyncStorage.removeItem("username");
       setStoredName("");
     } catch (e) {
-      console.error(e);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>AsyncStorage Demo</Text>
-      <Text>Stored Value: {storedName || "None"}</Text>
+      <Text style={styles.text}>Stored Value: {storedName || "None"}</Text>
 
       <TextInput
         style={styles.input}
@@ -66,11 +64,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
+    fontFamily: Fonts.bold,
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
   },
+  text: {
+    fontFamily: Fonts.regular,
+  },
   input: {
+    fontFamily: Fonts.regular,
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 8,
@@ -82,3 +85,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
 });
+

@@ -1,113 +1,115 @@
-import { useRef, useState } from "react";
-import { View, Button, Image, Text, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  CameraView,
-  useCameraPermissions,
-} from "expo-camera";
-import * as Linking from "expo-linking";
+import React, { useRef, useState } from 'react';
+import { View, ScrollView, StyleSheet, StatusBar, Platform } from 'react-native';
+import { Navbar } from '../components/Navbar';
+// import { HeroSection } from '../components/HeroSection';
+// import { ServicesSection } from '../components/ServicesSection';
+// import { ProductEngineeringSection } from '../components/ProductEngineeringSection';
+// import { TrustSection } from '../components/TrustSection';
+// import { WhyChooseUsSection } from '../components/WhyChooseUsSection';
+// import { CtaFooterSection } from '../components/CtaFooterSection';
 
-export default function App() {
-  const cameraRef = useRef<CameraView | null>(null);
-  const [photo, setPhoto] = useState<string | null>(null);
+export default function IndexScreen() {
+  const [activeTab, setActiveTab] = useState<string>('Home');
+  const scrollViewRef = useRef<ScrollView>(null);
 
-  const [permission, requestPermission] =
-    useCameraPermissions();
+  const sectionPositions = useRef<{ [key: string]: number }>({}).current;
 
-  if (!permission?.granted) {
-    return (
-      <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Button
-          title="Grant Camera Permission"
-          onPress={requestPermission}
-        />
-      </SafeAreaView>
-    );
-  }
+  const handleLayout = (sectionName: string, yPosition: number) => {
+    sectionPositions[sectionName] = yPosition;
+  };
 
-  const takePicture = async () => {
-    if (!cameraRef.current) return;
-    const result = await cameraRef.current.takePictureAsync();
-    if (result?.uri) {
-      setPhoto(result.uri);
+  const scrollToSection = (name: string) => {
+    setActiveTab(name);
+
+    if (name === 'Home') {
+      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
+
+    const y = sectionPositions[name];
+    if (y !== undefined) {
+      scrollViewRef.current?.scrollTo({ y: y - 10, animated: true });
     }
   };
 
-  const testDeepLinkProfile = () => {
-    const deepLinkUrl = Linking.createURL("/profile/99", {
-      queryParams: { role: "Developer" },
-    });
-    Linking.openURL(deepLinkUrl);
-  };
-
-  const testDeepLinkDetails = () => {
-    const deepLinkUrl = Linking.createURL("/details", {
-      queryParams: { name: "Alice", email: "alice@example.com", phone: "9994092050", company: "HashAgile" },
-    });
-    Linking.openURL(deepLinkUrl);
-  };
-
-  const callContact = () => {
-    Linking.openURL("tel:9994092050");
+  const handleScrollToTop = () => {
+    setActiveTab('Home');
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <CameraView
-        ref={cameraRef}
-        style={{ flex: 1 }}
-      />
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-      <View style={styles.controls}>
-        <Button
-          title="Capture"
-          onPress={takePicture}
-        />
+      <Navbar  activeTab={activeTab} onSelectNav={scrollToSection} />
 
-        <Text style={styles.heading}>Deep Link Actions:</Text>
-        <Button
-          title="Call Contact (9994092050)"
-          onPress={callContact}
-          color="#28a745"
-        />
-        <View style={{ height: 6 }} />
-        <Button
-          title="Test Deep Link -> Profile (/profile/99)"
-          onPress={testDeepLinkProfile}
-        />
-        <View style={{ height: 6 }} />
-        <Button
-          title="Test Deep Link -> Details (/details)"
-          onPress={testDeepLinkDetails}
-        />
-
-        {photo && (
-          <Image
-            source={{ uri: photo }}
-            style={{
-              width: 120,
-              height: 120,
-              alignSelf: "center",
-              marginVertical: 8,
-            }}
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* <View
+          onLayout={(e) => handleLayout('Home', e.nativeEvent.layout.y)}
+        >
+          <HeroSection
+            onContactPress={() => scrollToSection('Contact Us')}
           />
-        )}
-      </View>
-    </SafeAreaView>
+        </View> */}
+
+        {/* <View
+          onLayout={(e) => handleLayout('Insights', e.nativeEvent.layout.y)}
+        >
+          <TrustSection />
+        </View>
+
+        <View
+          onLayout={(e) => handleLayout('Expertise', e.nativeEvent.layout.y)}
+        >
+          <ServicesSection />
+        </View>
+
+        <View
+          onLayout={(e) => handleLayout('Company', e.nativeEvent.layout.y)}
+        >
+          <ProductEngineeringSection />
+        </View>
+
+      
+
+        <View
+          onLayout={(e) => handleLayout('Careers', e.nativeEvent.layout.y)}
+        >
+          <WhyChooseUsSection />
+        </View>
+
+        <View
+          onLayout={(e) => handleLayout('Portfolio', e.nativeEvent.layout.y)}
+        />
+
+        <View
+          onLayout={(e) => handleLayout('Contact Us', e.nativeEvent.layout.y)}
+        >
+          <CtaFooterSection
+            onContactPress={() => scrollToSection('Contact Us')}
+            onSelectNav={scrollToSection}
+            onScrollToTop={handleScrollToTop}
+          />
+        </View> */}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  controls: {
-    padding: 12,
-    backgroundColor: "#fff",
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
-  heading: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 6,
-    color: "#333",
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 0,
   },
 });

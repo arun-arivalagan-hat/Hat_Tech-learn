@@ -14,11 +14,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // Check stored JWT token on app start
     useEffect(() => {
         AsyncStorage.getItem("jwt_token")
             .then((savedToken) => setToken(savedToken))
-            .catch((err) => console.error("AsyncStorage getItem error:", err))
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, []);
 
@@ -27,7 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             await AsyncStorage.setItem("jwt_token", newToken);
             setToken(newToken);
         } catch (err) {
-            console.error("AsyncStorage setItem error:", err);
         }
     };
 
@@ -36,7 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             await AsyncStorage.removeItem("jwt_token");
             setToken(null);
         } catch (err) {
-            console.error("AsyncStorage removeItem error:", err);
         }
     };
 
