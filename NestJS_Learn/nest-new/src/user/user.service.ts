@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserLoggerService } from './logger/user.logger.service.js';
 
 export interface User {
@@ -27,7 +27,12 @@ export class UserService {
     getUser(id: number): User | undefined {
         this.userLogger.log(`Fetching user with ID: ${id}`);
         
-        return this.users.find(user => user.id === id);
+        const user = this.users.find(user => user.id === id);
+        if(!user) {
+            this.userLogger.log(`User with ID: ${id} not found`);
+            throw new NotFoundException(`User with ID: ${id} not found`);
+        }
+        return user;
     }
 
     // Create a new user
